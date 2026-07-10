@@ -1,0 +1,12 @@
+outputs/data/admin-config.json
+.upload-git/
+.agents/
+.codex/
+work/
+public/
+src/
+.gitkeep
+*.log
+node_modules/
+.DS_Store
+Thumbs.db

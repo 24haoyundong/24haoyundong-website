@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>&#31649;&#29702;&#21518;&#21488;</title>
+    <link rel="stylesheet" href="./admin.css?v=8">
+  </head>
+  <body>
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand">
+        <span>24</span>
+        <strong>&#31649;&#29702;&#21518;&#21488;</strong>
+      </div>
+      <nav class="sidebar-nav" aria-label="admin navigation">
+        <a class="active" href="#dashboard"><span>&#9635;</span>&#25511;&#21046;&#21488;</a>
+        <a href="#banners"><span>&#9636;</span>&#39318;&#39029;&#22270;&#29255;</a>
+        <a href="#shortcuts"><span>&#9638;</span>&#39318;&#39029;&#20837;&#21475;</a>
+        <a href="#home-content"><span>&#9640;</span>&#33258;&#23450;&#20041;&#20869;&#23481;</a>
+        <a href="#entry-pages"><span>&#9635;</span>&#20837;&#21475;&#20869;&#23481;</a>
+        <a href="#taobao-stores"><span>&#9636;</span>&#28120;&#23453;&#24215;&#38138;</a>
+        <a href="#pdd-stores"><span>&#9636;</span>&#25340;&#22810;&#22810;&#24215;</a>
+        <a href="#system-settings"><span>&#9675;</span>&#21672;&#35810;&#35774;&#32622;</a>
+        <a href="#data-tools"><span>&#9639;</span>&#25968;&#25454;&#24037;&#20855;</a>
+        <a href="#security"><span>&#9679;</span>&#23433;&#20840;&#35774;&#32622;</a>
+      </nav>
+    </aside>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button class="icon-button" type="button" id="sidebarToggle" aria-label="toggle menu">&#9776;</button>
+          <div>
+            <h1>&#31649;&#29702;&#21518;&#21488;</h1>
+            <p>Dashboard / &#20869;&#23481;&#31649;&#29702;</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button class="ghost-button" type="button" id="refreshAdmin">&#21047;&#26032;</button>
+          <span class="admin-user">admin</span>
+          <a class="ghost-button" href="./index.html">&#30475;&#21069;&#21488;</a>
+        </div>
+      </header>
+
+      <main class="admin-layout">
+      <section class="dashboard-section" id="dashboard">
+        <div class="page-title">
+          <div>
+            <h2>&#25511;&#21046;&#21488;</h2>
+            <p>&#24555;&#36895;&#26597;&#30475;&#24403;&#21069;&#32593;&#31449;&#20869;&#23481;&#21644;&#24120;&#29992;&#25805;&#20316;&#12290;</p>
+          </div>
+        </div>
+        <div class="stat-grid">
+          <article class="stat-card"><span>&#9638;</span><strong id="statShortcutCount">0</strong><p>&#26381;&#21153;&#20837;&#21475;</p></article>
+          <article class="stat-card"><span>&#9636;</span><strong id="statStoreCount">0</strong><p>&#24215;&#38138;&#25968;&#37327;</p></article>
+          <article class="stat-card"><span>&#9635;</span><strong id="statImageCount">0</strong><p>&#39318;&#39029;&#22270;&#29255;</p></article>
+          <article class="stat-card"><span>&#9640;</span><strong id="statContentCount">0</strong><p>&#33258;&#23450;&#20041;&#20869;&#23481;</p></article>
+        </div>
+        <div class="quick-actions admin-card">
+          <div class="card-head">
+            <h2>&#24555;&#25463;&#25805;&#20316;</h2>
+          </div>
+          <div class="quick-action-row">
+            <a href="#home-content">&#26032;&#22686;&#20869;&#23481;</a>
+            <a href="#taobao-stores">&#26032;&#22686;&#24215;&#38138;</a>
+            <a href="#banners">&#19978;&#20256;&#22270;&#29255;</a>
+            <a href="#system-settings">&#20462;&#25913;&#32852;&#31995;&#26041;&#24335;</a>
+            <a href="./index.html">&#26597;&#30475;&#21069;&#21488;</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="admin-card" id="banners">
+        <div class="card-head">
+          <h2>&#39318;&#39029;&#28378;&#21160;&#22270;&#29255;</h2>
+          <div class="button-row">
+            <label class="upload-button">
+              &#19978;&#20256;&#22270;&#29255;
+              <input id="bannerUpload" type="file" accept="image/*" multiple>
+            </label>
+            <button type="button" id="saveBanners">&#20445;&#23384;&#22270;&#29255;</button>
+            <button type="button" id="exportBanners">&#19979;&#36733;&#22270;&#29255;&#22791;&#20221;</button>
+            <label class="upload-button backup-button">
+              &#23548;&#20837;&#22270;&#29255;&#22791;&#20221;
+              <input id="bannerBackupInput" type="file" accept="application/json,.json">
+            </label>
+          </div>
+        </div>
+        <div class="hint">&#36825;&#37324;&#19978;&#20256;&#29992;&#25143;&#39318;&#39029;&#26368;&#19978;&#26041;&#30340;&#22270;&#29255;&#12290;&#20445;&#23384;&#21518;&#22270;&#29255;&#20250;&#22312;&#26412;&#27983;&#35272;&#22120;&#37324;&#65292;&#24314;&#35758;&#20877;&#28857;&#19968;&#19979;&#8220;&#19979;&#36733;&#22270;&#29255;&#22791;&#20221;&#8221;&#65292;&#20197;&#21518;&#19981;&#23567;&#24515;&#28165;&#31354;&#20102;&#20063;&#33021;&#23548;&#20837;&#24674;&#22797;&#12290;</div>
+        <div class="banner-setting">
+          <label>&#39318;&#39029;&#22270;&#29255;&#39640;&#24230;&#65288;px&#65289;<input id="bannerHeightInput" type="number" min="80" max="320" step="1"></label>
+          <span>&#24314;&#35758;&#65306;128&#65292;&#21487;&#22635; 80-320</span>
+        </div>
+        <div class="banner-editor" id="bannerEditor"></div>
+      </section>
+
+      <section class="admin-card" id="shortcuts">
+        <div class="card-head">
+          <h2>8&#20010;&#39318;&#39029;&#20837;&#21475;</h2>
+          <button type="button" id="saveShortcuts">&#20445;&#23384;&#20837;&#21475;</button>
+        </div>
+        <div class="hint">&#25913;&#21517;&#31216;&#12289;&#22270;&#26631;&#23383;&#12289;&#39068;&#33394;&#21644;&#36339;&#36716;&#38142;&#25509;&#12290;</div>
+        <div class="shortcut-editor" id="shortcutEditor"></div>
+      </section>
+
+      <section class="admin-card" id="home-content">
+        <div class="card-head">
+          <h2>&#39318;&#39029;&#33258;&#23450;&#20041;&#20869;&#23481;</h2>
+          <div class="button-row">
+            <button type="button" id="addHomeContent">&#26032;&#22686;&#20869;&#23481;</button>
+            <button type="button" id="saveHomeContents">&#20445;&#23384;&#39318;&#39029;&#20869;&#23481;</button>
+          </div>
+        </div>
+        <div class="hint">&#36825;&#37324;&#30340;&#20869;&#23481;&#20250;&#26174;&#31034;&#22312;&#39318;&#39029; 8 &#20010;&#20837;&#21475;&#19979;&#38754;&#12290;&#21487;&#20197;&#22635;&#26631;&#39064;&#12289;&#25991;&#23383;&#12289;&#22270;&#29255;&#22320;&#22336;&#12289;&#25353;&#38062;&#21644;&#36339;&#36716;&#38142;&#25509;&#12290;</div>
+        <div class="content-editor" id="homeContentEditor"></div>
+      </section>
+
+      <section class="admin-card" id="entry-pages">
+        <div class="card-head">
+          <h2>&#20837;&#21475;&#28857;&#20987;&#21518;&#30340;&#39029;&#38754;&#20869;&#23481;</h2>
+          <button type="button" id="saveEntryPages">&#20445;&#23384;&#20869;&#23481;&#39029;</button>
+        </div>
+        <div class="hint">&#36825;&#37324;&#25913;&#27599;&#20010;&#22270;&#26631;&#28857;&#36827;&#21435;&#21518;&#29992;&#25143;&#30475;&#21040;&#30340;&#31383;&#21475;&#20869;&#23481;&#12290;</div>
+        <div class="entry-editor" id="entryEditor"></div>
+      </section>
+
+      <section class="admin-card" id="taobao-stores">
+        <div class="card-head">
+          <h2>&#28120;&#23453;&#24215;&#38138;&#25968;&#25454;</h2>
+          <div class="button-row">
+            <button type="button" id="addStore">&#26032;&#22686;&#24215;&#38138;</button>
+            <button type="button" id="saveStores">&#20445;&#23384;&#24215;&#38138;</button>
+          </div>
+        </div>
+        <div class="hint">&#27599;&#19968;&#34892;&#23601;&#26159;&#19968;&#20010;&#24215;&#38138;&#65292;&#29992;&#34920;&#21333;&#30452;&#25509;&#25913;&#12290;</div>
+        <div class="store-editor" id="storeEditor"></div>
+      </section>
+
+      <section class="admin-card" id="pdd-stores">
+        <div class="card-head">
+          <h2>&#25340;&#22810;&#22810;&#24215;&#38138;&#25968;&#25454;</h2>
+          <div class="button-row">
+            <button type="button" id="addPddStore">&#26032;&#22686;&#24215;&#38138;</button>
+            <button type="button" id="savePddStores">&#20445;&#23384;&#22810;&#22810;&#24215;</button>
+          </div>
+        </div>
+        <div class="hint">&#20080;&#22810;&#22810;&#24215;&#39029;&#38754;&#30340;&#24215;&#38138;&#21015;&#34920;&#65292;&#22312;&#36825;&#37324;&#25913;&#12290;</div>
+        <div class="store-editor" id="pddStoreEditor"></div>
+      </section>
+
+      <section class="admin-card" id="system-settings">
+        <div class="card-head">
+          <h2>&#31995;&#32479;&#21672;&#35810;&#35774;&#32622;</h2>
+          <button type="button" id="saveSystemSettings">&#20445;&#23384;&#21672;&#35810;&#35774;&#32622;</button>
+        </div>
+        <div class="hint">&#31995;&#32479;&#37324;&#25152;&#26377;&#8220;&#30005;&#35805;&#21672;&#35810;&#8221;&#12289;&#8220;&#21672;&#35810;&#35813;&#24215;&#8221;&#30340;&#30005;&#35805;&#21644;&#25991;&#23383;&#65292;&#32479;&#19968;&#22312;&#36825;&#37324;&#20462;&#25913;&#12290;</div>
+        <div class="system-editor">
+          <label>&#21672;&#35810;&#30005;&#35805;<input id="consultPhoneInput" placeholder="13800138000"></label>
+          <label>&#25105;&#30340;&#39029;&#26631;&#39064;<input id="consultTitleInput" placeholder="&#30005;&#35805;&#21672;&#35810;"></label>
+          <label>&#25105;&#30340;&#39029;&#35828;&#26126;<input id="consultTextInput" placeholder="&#28857;&#20987;&#32852;&#31995;&#26381;&#21153;&#39038;&#38382;"></label>
+          <label>&#24215;&#38138;&#35814;&#24773;&#25353;&#38062;<input id="consultStoreTextInput" placeholder="&#21672;&#35810;&#35813;&#24215;"></label>
+          <label>&#20027;&#25353;&#38062;&#25991;&#23383;<input id="consultPrimaryTextInput" placeholder="&#31435;&#21363;&#21672;&#35810;"></label>
+        </div>
+      </section>
+
+      <section class="admin-card" id="data-tools">
+        <div class="card-head">
+          <h2>&#25968;&#25454;&#24037;&#20855;</h2>
+          <div class="button-row">
+            <button type="button" id="exportData">&#23548;&#20986;&#25968;&#25454;</button>
+            <button type="button" id="resetData">&#24674;&#22797;&#40664;&#35748;</button>
+          </div>
+        </div>
+        <textarea id="dataBox" placeholder="JSON"></textarea>
+      </section>
+
+      <section class="admin-card" id="security">
+        <div class="card-head">
+          <h2>&#21518;&#21488;&#23433;&#20840;&#35774;&#32622;</h2>
+          <button type="button" id="saveAdminPassword">&#20445;&#23384;&#26032;&#23494;&#30721;</button>
+        </div>
+        <div class="hint">&#22312;&#36825;&#37324;&#20462;&#25913;&#31649;&#29702;&#21518;&#21488;&#30340;&#30331;&#24405;&#36134;&#21495;&#21644;&#23494;&#30721;&#12290;&#20445;&#23384;&#21518;&#65292;&#19979;&#27425;&#36827;&#20837;&#21518;&#21488;&#38656;&#35201;&#29992;&#26032;&#23494;&#30721;&#30331;&#24405;&#12290;</div>
+        <div class="security-editor">
+          <label>&#21518;&#21488;&#36134;&#21495;<input id="adminUserInput" value="admin" autocomplete="username"></label>
+          <label>&#26032;&#23494;&#30721;<input id="adminPassInput" type="password" autocomplete="new-password" placeholder="&#33267;&#23569; 6 &#20301;"></label>
+          <label>&#20877;&#36755;&#19968;&#27425;&#26032;&#23494;&#30721;<input id="adminPassConfirmInput" type="password" autocomplete="new-password"></label>
+        </div>
+      </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <button class="back-top" type="button" id="backTop" aria-label="back to top">&#8593;</button>
+    <div class="confirm-mask" id="confirmMask" aria-hidden="true">
+      <div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+        <h2 id="confirmTitle">&#30830;&#35748;&#25805;&#20316;</h2>
+        <p id="confirmText"></p>
+        <div class="confirm-actions">
+          <button class="ghost-button" type="button" id="confirmCancel">&#21462;&#28040;</button>
+          <button class="danger-button" type="button" id="confirmOk">&#30830;&#35748;</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./site-data.js"></script>
+    <script src="./admin.js?v=9"></script>
+  </body>
+</html>

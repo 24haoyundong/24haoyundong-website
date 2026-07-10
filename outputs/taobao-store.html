@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>&#28120;&#23453;&#24215;&#38138;&#20080;&#21334;&#36716;&#35753;</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="phone-shell detail-shell">
+      <header class="detail-topbar">
+        <a href="./index.html" aria-label="back">&#8249;</a>
+        <strong>&#35814;&#24773;</strong>
+        <span aria-hidden="true"></span>
+      </header>
+
+      <section class="detail-cover">
+        <div class="cover-card">
+          <img src="./assets/taobao-store.png" alt="">
+          <div>
+            <span>&#28120;&#23453;&#24215;&#38138;&#20080;&#21334;</span>
+            <h1>&#24215;&#38138;&#36716;&#35753;&#36164;&#28304;&#34920;</h1>
+            <p>&#36865;&#20215;&#20540;365&#30005;&#21830;&#20250;&#21592;</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="detail-title">
+        <h2>&#28120;&#23453;&#24215;&#38138;&#20080;&#21334;&#36716;&#35753; &#36865;&#20215;&#20540;365&#30005;&#21830;&#20250;&#21592;</h2>
+        <p>91858 &#27425;&#23398;&#20064;</p>
+      </section>
+
+      <section class="store-tools">
+        <label class="filter-input">
+          <span>&#25628;&#32034;&#31867;&#30446;/&#31561;&#32423;</span>
+          <input id="storeSearch" type="search" aria-label="store search" placeholder="">
+        </label>
+        <div class="filter-row" id="rankFilters">
+          <button class="active" type="button" data-rank="all">&#20840;&#37096;</button>
+          <button type="button" data-rank="heart">&#24515;&#32423;</button>
+          <button type="button" data-rank="diamond">&#38075;&#32423;</button>
+          <button type="button" data-rank="clean">&#26080;&#21806;&#20551;</button>
+        </div>
+      </section>
+
+      <section class="store-section">
+        <h2>&#28120;&#23453;1-5&#38075;&#24215;&#65288;&#28857;&#20987;&#30475;&#24215;&#38138;&#35814;&#24773;&#65289;</h2>
+        <div class="store-list" id="storeList"></div>
+      </section>
+    </main>
+
+    <nav class="detail-cta">
+      <a id="detailConsultLink" href="tel:18820286825">&#30005;&#35805;&#21672;&#35810;</a>
+    </nav>
+
+    <div class="store-modal" id="storeModal" aria-hidden="true">
+      <div class="store-modal-panel" role="dialog" aria-modal="true" aria-labelledby="storeModalTitle">
+        <button class="modal-close" type="button" id="modalClose" aria-label="close">&#215;</button>
+        <div id="storeModalBody"></div>
+      </div>
+    </div>
+
+    <script src="./site-data.js"></script>
+    <script src="./taobao-store.js?v=2"></script>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>我要买店</title>
+    <link rel="stylesheet" href="./styles.css?v=5">
+  </head>
+  <body>
+    <main class="phone-shell deal-page">
+      <section class="deal-search">
+        <label>
+          <span>搜索店铺</span>
+          <input id="buySearch" type="search" aria-label="搜索店铺">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m16.5 16.5 4 4"></path>
+          </svg>
+        </label>
+      </section>
+
+      <section class="deal-safe">
+        <span>交易保障：</span>
+        <b>✓ 真实在售</b>
+        <b>✓ 在线交流</b>
+        <b>✓ 无忧交易</b>
+      </section>
+
+      <section class="deal-actions" aria-label="快捷入口">
+        <a href="./buy-store.html" class="active"><span class="deal-icon coin">￥</span>我要买店</a>
+        <a href="./entry-page.html?id=tmall"><span class="deal-icon flag">⚑</span>代入驻</a>
+        <a href="./entry-page.html?id=evaluate"><span class="deal-icon scale">⚖</span>网店评估</a>
+        <a href="./entry-page.html?id=service"><span class="deal-icon bag">￥</span>我要出售</a>
+      </section>
+
+      <section class="deal-filter" id="buyPlatforms">
+        <button class="active" type="button" data-type="all">猫店</button>
+        <button type="button" data-type="taobao">价格</button>
+        <button type="button" data-type="pdd">品牌</button>
+        <button type="button" data-type="tmall">其他</button>
+        <button type="button" data-type="sort">排序 ⇅</button>
+      </section>
+
+      <section class="deal-list-head">
+        <h1>店铺转让</h1>
+        <span id="buyCount"></span>
+      </section>
+      <section class="deal-list" id="buyList"></section>
+    </main>
+
+    <nav class="deal-tabbar" aria-label="tabs">
+      <a href="./index.html">
+        <span>⌂</span>
+        首页
+      </a>
+      <a class="active" href="./buy-store.html">
+        <span>▣</span>
+        买店
+      </a>
+      <a class="consult" href="./entry-page.html?id=service">
+        <span>☎</span>
+        咨询
+      </a>
+      <a href="./entry-page.html?id=service">
+        <span>▰</span>
+        出售
+      </a>
+      <a href="./my.html">
+        <span>◇</span>
+        我的
+      </a>
+    </nav>
+
+    <script src="./site-data.js"></script>
+    <script src="./buy-store.js"></script>
+  </body>
+</html>

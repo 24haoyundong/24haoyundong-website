@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="240" viewBox="0 0 430 240">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b46b8"/>
+      <stop offset="0.54" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#f2b33a"/>
+    </linearGradient>
+    <linearGradient id="gold1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff4b0"/>
+      <stop offset="1" stop-color="#c98713"/>
+    </linearGradient>
+    <filter id="soft1" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0d2d69" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <rect width="430" height="240" rx="22" fill="url(#bg1)"/>
+  <path d="M-20 206 C76 154 121 169 196 124 C275 76 326 68 456 24 L456 240 L-20 240Z" fill="#fff" opacity=".86"/>
+  <path d="M260 0 L430 0 L430 106 C376 85 322 54 260 0Z" fill="#0d55d9" opacity=".18"/>
+  <circle cx="354" cy="54" r="38" fill="#fff" opacity=".28"/>
+  <circle cx="385" cy="87" r="18" fill="#ffcf57" opacity=".78"/>
+  <g filter="url(#soft1)">
+    <rect x="28" y="30" width="236" height="62" rx="10" fill="#ffffff"/>
+    <path d="M28 78 H264 V92 H28Z" fill="#123f9e"/>
+    <text x="44" y="70" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="34" font-weight="900" fill="#1b356f">贰拾肆号电商</text>
+    <text x="48" y="88" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="12" font-weight="700" fill="#ffffff">十余年行业经验 · 高效服务 · 值得信赖</text>
+  </g>
+  <text x="32" y="130" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="24" font-weight="900" fill="#10254f">电商店铺转让服务</text>
+  <text x="33" y="159" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="15" font-weight="700" fill="#33466d">淘宝 · 天猫 · 拼多多 · 抖店资源对接</text>
+  <g transform="translate(31 181)" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="13" font-weight="700">
+    <rect width="76" height="28" rx="14" fill="#123f9e"/>
+    <text x="18" y="19" fill="#fff">真实在售</text>
+    <rect x="86" width="76" height="28" rx="14" fill="#f0a51c"/>
+    <text x="104" y="19" fill="#fff">资料核验</text>
+    <rect x="172" width="76" height="28" rx="14" fill="#10254f"/>
+    <text x="190" y="19" fill="#fff">全程咨询</text>
+  </g>
+  <g transform="translate(287 118)">
+    <rect x="0" y="0" width="104" height="76" rx="18" fill="#fff" opacity=".92"/>
+    <circle cx="31" cy="31" r="20" fill="#0d55d9"/>
+    <path d="M21 33 L28 40 L43 21" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="18" y="66" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="13" font-weight="900" fill="#10254f">安全交易</text>
+  </g>
+</svg>

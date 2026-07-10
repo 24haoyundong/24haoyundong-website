@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="240" viewBox="0 0 430 240">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset=".58" stop-color="#eef5ff"/>
+      <stop offset="1" stop-color="#d7e7ff"/>
+    </linearGradient>
+    <linearGradient id="blue3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d5ce4"/>
+      <stop offset="1" stop-color="#082a78"/>
+    </linearGradient>
+    <filter id="soft3" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#0c2e7a" flood-opacity=".16"/>
+    </filter>
+  </defs>
+  <rect width="430" height="240" rx="22" fill="url(#bg3)"/>
+  <path d="M0 193 C72 170 138 176 207 144 C285 108 340 88 430 97 L430 240 L0 240Z" fill="#0f56d8" opacity=".11"/>
+  <path d="M0 0 H155 L119 67 H0Z" fill="url(#blue3)"/>
+  <text x="23" y="42" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="20" font-weight="900" fill="#fff">贰拾肆号</text>
+  <text x="23" y="66" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="16" font-weight="800" fill="#ffcf4d">电商服务</text>
+  <text x="35" y="116" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="30" font-weight="900" fill="#112a5b">找店 · 评估 · 入驻</text>
+  <text x="37" y="148" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="17" font-weight="800" fill="#1954b8">让电商资源对接更简单</text>
+  <g transform="translate(36 174)" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="13" font-weight="800">
+    <circle cx="10" cy="10" r="10" fill="#0d5ce4"/>
+    <path d="M5 10 L9 14 L16 6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="28" y="15" fill="#44506a">资料核验</text>
+    <circle cx="116" cy="10" r="10" fill="#0d5ce4"/>
+    <path d="M111 10 L115 14 L122 6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="134" y="15" fill="#44506a">流程清晰</text>
+    <circle cx="222" cy="10" r="10" fill="#0d5ce4"/>
+    <path d="M217 10 L221 14 L228 6" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="240" y="15" fill="#44506a">专人咨询</text>
+  </g>
+  <g transform="translate(270 39)" filter="url(#soft3)">
+    <rect x="0" y="0" width="116" height="118" rx="20" fill="#fff"/>
+    <circle cx="58" cy="42" r="29" fill="#f5b72e"/>
+    <text x="34" y="53" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="30" font-weight="900" fill="#0d3c9b">24</text>
+    <rect x="20" y="86" width="76" height="20" rx="10" fill="#0d5ce4"/>
+    <text x="34" y="101" font-family="Microsoft YaHei, PingFang SC, Arial" font-size="12" font-weight="800" fill="#fff">快速咨询</text>
+  </g>
+</svg>
