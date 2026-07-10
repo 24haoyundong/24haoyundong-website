@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const zlib = require("zlib");
 
 const PORT = Number(process.env.PORT || 8080);
 const PUBLIC_DIR = path.join(__dirname, "outputs");
@@ -38,8 +39,20 @@ const mimeTypes = {
   ".ico": "image/x-icon"
 };
 
-function send(res, status, body, headers = {}) {
-  res.writeHead(status, Object.assign({ "Cache-Control": "no-store" }, headers));
+function canGzip(req) {
+  return /\bgzip\b/.test(req.headers["accept-encoding"] || "");
+}
+
+function send(req, res, status, body, headers = {}) {
+  const responseHeaders = Object.assign({ "Cache-Control": "no-store" }, headers);
+  if (canGzip(req) && (typeof body === "string" || Buffer.isBuffer(body)) && Buffer.byteLength(body) > 1024) {
+    responseHeaders["Content-Encoding"] = "gzip";
+    responseHeaders["Vary"] = "Accept-Encoding";
+    res.writeHead(status, responseHeaders);
+    res.end(zlib.gzipSync(body));
+    return;
+  }
+  res.writeHead(status, responseHeaders);
   res.end(body);
 }
 
@@ -57,7 +70,7 @@ function isAuthed(req) {
 
 function requireAuth(req, res) {
   if (isAuthed(req)) return true;
-  send(res, 401, "需要登录管理后台", {
+  send(req, res, 401, "需要登录管理后台", {
     "WWW-Authenticate": 'Basic realm="Admin"',
     "Content-Type": "text/plain; charset=utf-8"
   });
@@ -114,35 +127,46 @@ window.siteDataStore = {
 `;
 }
 
-function serveSiteData(res) {
+function serveSiteData(req, res) {
   if (fs.existsSync(DATA_FILE)) {
     const dataJson = fs.readFileSync(DATA_FILE, "utf8");
-    send(res, 200, storeScript(dataJson), { "Content-Type": "application/javascript; charset=utf-8" });
+    send(req, res, 200, storeScript(dataJson), { "Content-Type": "application/javascript; charset=utf-8" });
     return;
   }
   const fallback = fs.readFileSync(path.join(PUBLIC_DIR, "site-data.js"));
-  send(res, 200, fallback, { "Content-Type": "application/javascript; charset=utf-8" });
+  send(req, res, 200, fallback, { "Content-Type": "application/javascript; charset=utf-8" });
 }
 
-function serveStatic(urlPath, res) {
+function serveStatic(req, urlPath, res) {
   const cleanPath = decodeURIComponent(urlPath.split("?")[0]);
   const relativePath = cleanPath === "/" ? "index.html" : cleanPath.replace(/^\/+/, "");
   const filePath = path.normalize(path.join(PUBLIC_DIR, relativePath));
 
   if (!filePath.startsWith(PUBLIC_DIR)) {
-    send(res, 403, "Forbidden", { "Content-Type": "text/plain; charset=utf-8" });
+    send(req, res, 403, "Forbidden", { "Content-Type": "text/plain; charset=utf-8" });
     return;
   }
   if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
-    send(res, 404, "Not found", { "Content-Type": "text/plain; charset=utf-8" });
+    send(req, res, 404, "Not found", { "Content-Type": "text/plain; charset=utf-8" });
     return;
   }
 
   const ext = path.extname(filePath).toLowerCase();
-  res.writeHead(200, {
+  const headers = {
     "Content-Type": mimeTypes[ext] || "application/octet-stream",
     "Cache-Control": ext === ".html" || ext === ".js" || ext === ".css" ? "no-store" : "public, max-age=86400"
-  });
+  };
+
+  if (canGzip(req) && [".html", ".css", ".js", ".json", ".svg"].includes(ext)) {
+    const body = fs.readFileSync(filePath);
+    headers["Content-Encoding"] = "gzip";
+    headers["Vary"] = "Accept-Encoding";
+    res.writeHead(200, headers);
+    res.end(zlib.gzipSync(body));
+    return;
+  }
+
+  res.writeHead(200, headers);
   fs.createReadStream(filePath).pipe(res);
 }
 
@@ -158,9 +182,9 @@ const server = http.createServer(async (req, res) => {
       const data = JSON.parse(body);
       fs.mkdirSync(DATA_DIR, { recursive: true });
       fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), "utf8");
-      send(res, 200, JSON.stringify({ ok: true }), { "Content-Type": "application/json; charset=utf-8" });
+      send(req, res, 200, JSON.stringify({ ok: true }), { "Content-Type": "application/json; charset=utf-8" });
     } catch (error) {
-      send(res, 400, JSON.stringify({ ok: false }), { "Content-Type": "application/json; charset=utf-8" });
+      send(req, res, 400, JSON.stringify({ ok: false }), { "Content-Type": "application/json; charset=utf-8" });
     }
     return;
   }
@@ -174,19 +198,19 @@ const server = http.createServer(async (req, res) => {
       if (!user || !pass || pass.length < 6) throw new Error("bad config");
       fs.mkdirSync(DATA_DIR, { recursive: true });
       fs.writeFileSync(ADMIN_CONFIG_FILE, JSON.stringify({ user, pass }, null, 2), "utf8");
-      send(res, 200, JSON.stringify({ ok: true }), { "Content-Type": "application/json; charset=utf-8" });
+      send(req, res, 200, JSON.stringify({ ok: true }), { "Content-Type": "application/json; charset=utf-8" });
     } catch (error) {
-      send(res, 400, JSON.stringify({ ok: false }), { "Content-Type": "application/json; charset=utf-8" });
+      send(req, res, 400, JSON.stringify({ ok: false }), { "Content-Type": "application/json; charset=utf-8" });
     }
     return;
   }
 
   if (urlPath === "/site-data.js") {
-    serveSiteData(res);
+    serveSiteData(req, res);
     return;
   }
 
-  serveStatic(urlPath, res);
+  serveStatic(req, urlPath, res);
 });
 
 server.listen(PORT, "0.0.0.0", () => {
