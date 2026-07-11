@@ -1,0 +1,8 @@
+pocketbase/pb_data/
+pocketbase/pb_public/
+pocketbase/pocketbase.exe
+*.log
+*.tmp
+node_modules/
+.DS_Store
+Thumbs.db

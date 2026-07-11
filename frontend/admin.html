@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>中文管理后台 - 24号电商</title>
+    <link rel="stylesheet" href="./assets/admin.css">
+  </head>
+  <body>
+    <div class="admin-shell">
+      <aside class="admin-sidebar">
+        <div class="admin-brand">
+          <strong>24号电商</strong>
+          <span>中文管理后台</span>
+        </div>
+        <nav>
+          <a class="active" href="#dashboard">控制台</a>
+          <a href="#site">网站设置</a>
+          <a href="#home">首页管理</a>
+          <a href="#stores">店铺管理</a>
+          <a href="#navs">菜单管理</a>
+        </nav>
+      </aside>
+
+      <main class="admin-main">
+        <header class="admin-topbar">
+          <div>
+            <h1>管理后台</h1>
+            <p>这里是中文操作入口，数据仍然保存在 PocketBase。</p>
+          </div>
+          <div class="topbar-actions">
+            <a href="./index.html" target="_blank">查看前台</a>
+            <a href="http://127.0.0.1:8090/_/" target="_blank">打开原后台</a>
+          </div>
+        </header>
+
+        <section class="stats-grid" id="dashboard">
+          <article>
+            <span>首页横幅</span>
+            <strong id="statBanners">-</strong>
+          </article>
+          <article>
+            <span>首页入口</span>
+            <strong id="statMenus">-</strong>
+          </article>
+          <article>
+            <span>店铺数量</span>
+            <strong id="statStores">-</strong>
+          </article>
+          <article>
+            <span>底部菜单</span>
+            <strong id="statBottomNavs">-</strong>
+          </article>
+        </section>
+
+        <section class="admin-card" id="site">
+          <div class="card-head">
+            <div>
+              <h2>网站设置</h2>
+              <p>电话、微信、咨询按钮、网站名称。</p>
+            </div>
+            <a class="primary" target="_blank" href="http://127.0.0.1:8090/_/#/collections?collection=site_settings">去编辑</a>
+          </div>
+          <div class="tip-list">
+            <p><b>电话咨询没变：</b>改这里的 `phone` 和 `contact_link`。</p>
+            <p><b>咨询跳转：</b>`contact_link` 可以填 `tel:手机号`。</p>
+          </div>
+        </section>
+
+        <section class="admin-card" id="home">
+          <div class="card-head">
+            <div>
+              <h2>首页管理</h2>
+              <p>轮播图、8 个入口、首页自定义内容。</p>
+            </div>
+          </div>
+          <div class="action-grid">
+            <a target="_blank" href="http://127.0.0.1:8090/_/#/collections?collection=home_banners"><strong>首页轮播图</strong><span>上传图片、设置高度和排序</span></a>
+            <a target="_blank" href="http://127.0.0.1:8090/_/#/collections?collection=home_menus"><strong>首页入口菜单</strong><span>修改 8 个入口名称和链接</span></a>
+            <a target="_blank" href="http://127.0.0.1:8090/_/#/collections?collection=service_pages"><strong>8 个入口详情页</strong><span>编辑我要卖店、代入驻、评估等页面内容</span></a>
+            <a target="_blank" href="http://127.0.0.1:8090/_/#/collections?collection=home_sections"><strong>首页内容模块</strong><span>新增图文内容和按钮</span></a>
+          </div>
+        </section>
+
+        <section class="admin-card" id="stores">
+          <div class="card-head">
+            <div>
+              <h2>店铺管理</h2>
+              <p>买店页的列表、分类和店铺详情。</p>
+            </div>
+          </div>
+          <div class="action-grid">
+            <a target="_blank" href="http://127.0.0.1:8090/_/#/collections?collection=stores"><strong>店铺列表</strong><span>新增、修改店铺资源</span></a>
+            <a target="_blank" href="http://127.0.0.1:8090/_/#/collections?collection=store_categories"><strong>店铺分类</strong><span>淘宝、拼多多、天猫等分类</span></a>
+            <a target="_blank" href="http://127.0.0.1:8090/_/#/collections?collection=faqs"><strong>常见问题</strong><span>维护问答内容</span></a>
+          </div>
+        </section>
+
+        <section class="admin-card" id="navs">
+          <div class="card-head">
+            <div>
+              <h2>菜单管理</h2>
+              <p>底部 4 个菜单现在也可以在后台维护。</p>
+            </div>
+            <a class="primary" target="_blank" href="http://127.0.0.1:8090/_/#/collections?collection=bottom_navs">编辑底部菜单</a>
+          </div>
+          <div class="tip-list">
+            <p><b>action：</b>`link` 表示普通跳转，`consult` 表示走电话咨询。</p>
+            <p><b>page_key：</b>`home`、`buy-store`、`my` 用来高亮当前菜单。</p>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="./assets/admin.js"></script>
+  </body>
+</html>
