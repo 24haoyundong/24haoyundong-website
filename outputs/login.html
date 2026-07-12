@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>&#29992;&#25143;&#30331;&#24405;</title>
+    <link rel="stylesheet" href="./styles.css?v=18">
+  </head>
+  <body>
+    <main class="phone-shell login-page">
+      <section class="login-card">
+        <h1 id="loginTitle">&#29992;&#25143;&#30331;&#24405;</h1>
+        <p id="loginDesc">&#30331;&#24405;&#21518;&#21487;&#26597;&#30475;&#20010;&#20154;&#26381;&#21153;&#19982;&#21672;&#35810;&#35760;&#24405;&#12290;</p>
+
+        <div class="login-tabs" role="tablist">
+          <button class="active" id="loginTab" type="button">&#30331;&#24405;</button>
+          <button id="registerTab" type="button">&#27880;&#20876;</button>
+        </div>
+
+        <label class="register-only" hidden>
+          <span>&#26165;&#31216;</span>
+          <input id="nicknameInput" type="text" autocomplete="nickname" placeholder="&#35831;&#36755;&#20837;&#26165;&#31216;">
+        </label>
+        <label>
+          <span>&#36134;&#21495; / &#25163;&#26426; / &#37038;&#31665;</span>
+          <input id="accountInput" type="text" autocomplete="username" placeholder="&#35831;&#36755;&#20837;&#36134;&#21495;">
+        </label>
+        <label>
+          <span>&#23494;&#30721;</span>
+          <input id="passwordInput" type="password" autocomplete="current-password" placeholder="&#33267;&#23569; 6 &#20301;">
+        </label>
+        <label class="register-only" hidden>
+          <span>&#30830;&#35748;&#23494;&#30721;</span>
+          <input id="confirmPasswordInput" type="password" autocomplete="new-password" placeholder="&#20877;&#36755;&#20837;&#19968;&#27425;&#23494;&#30721;">
+        </label>
+
+        <button id="submitBtn" type="button">&#30331;&#24405;</button>
+        <div id="loginMessage" class="login-message"></div>
+      </section>
+    </main>
+    <script src="./login.js?v=4"></script>
+  </body>
+</html>

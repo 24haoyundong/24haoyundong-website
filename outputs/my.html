@@ -4,19 +4,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>我的</title>
-    <link rel="stylesheet" href="./styles.css?v=5">
+    <link rel="stylesheet" href="./styles.css?v=15">
   </head>
   <body>
     <main class="phone-shell user-page">
       <header class="user-head">
-        <div class="user-avatar">我</div>
+        <div class="user-avatar" id="userAvatar">我</div>
         <div>
-          <h1>我的</h1>
-          <p>欢迎咨询电商店铺服务</p>
+          <h1 id="userName">我的</h1>
+          <p id="userDesc">欢迎咨询电商店铺服务</p>
         </div>
       </header>
 
       <section class="user-panel">
+        <a id="loginLink" href="./login.html">
+          <strong>用户登录</strong>
+          <span>登录后查看个人服务</span>
+        </a>
         <a id="consultLink" href="tel:18820286825">
           <strong id="consultTitle">电话咨询</strong>
           <span id="consultText">点击联系服务顾问</span>
@@ -30,6 +34,7 @@
           <span>查看服务介绍</span>
         </a>
       </section>
+      <button class="logout-btn" id="logoutBtn" type="button" hidden>退出登录</button>
     </main>
 
     <nav class="tabbar" aria-label="tabs">
@@ -51,6 +56,6 @@
       </a>
     </nav>
     <script src="./site-data.js"></script>
-    <script src="./my.js?v=2"></script>
+    <script src="./my.js?v=3"></script>
   </body>
 </html>

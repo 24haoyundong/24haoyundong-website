@@ -20,6 +20,7 @@
         <a href="#entry-pages"><span>&#9635;</span>&#20837;&#21475;&#20869;&#23481;</a>
         <a href="#taobao-stores"><span>&#9636;</span>&#28120;&#23453;&#24215;&#38138;</a>
         <a href="#pdd-stores"><span>&#9636;</span>&#25340;&#22810;&#22810;&#24215;</a>
+        <a href="#users"><span>&#9679;</span>用户管理</a>
         <a href="#system-settings"><span>&#9675;</span>&#21672;&#35810;&#35774;&#32622;</a>
         <a href="#data-tools"><span>&#9639;</span>&#25968;&#25454;&#24037;&#20855;</a>
         <a href="#security"><span>&#9679;</span>&#23433;&#20840;&#35774;&#32622;</a>
@@ -148,6 +149,29 @@
         <div class="store-editor" id="pddStoreEditor"></div>
       </section>
 
+      <section class="admin-card" id="users">
+        <div class="card-head">
+          <h2>用户管理</h2>
+          <button type="button" id="refreshUsers">刷新用户</button>
+        </div>
+        <div class="hint">这里显示前台注册的用户。当前版本只做查看，后续可以继续加禁用、备注、咨询记录。</div>
+        <div class="user-table-wrap">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>昵称</th>
+                <th>账号</th>
+                <th>注册时间</th>
+                <th>登录次数</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody">
+              <tr><td colspan="4">正在加载...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section class="admin-card" id="system-settings">
         <div class="card-head">
           <h2>&#31995;&#32479;&#21672;&#35810;&#35774;&#32622;</h2>
@@ -203,6 +227,6 @@
     </div>
 
     <script src="./site-data.js"></script>
-    <script src="./admin.js?v=9"></script>
+    <script src="./admin.js?v=10"></script>
   </body>
 </html>

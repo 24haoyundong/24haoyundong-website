@@ -507,6 +507,44 @@ label {
   font-size: 13px;
 }
 
+.user-table-wrap {
+  overflow-x: auto;
+  margin-top: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+}
+
+.user-table {
+  width: 100%;
+  min-width: 680px;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.user-table th,
+.user-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.user-table th {
+  background: #f8fafc;
+  color: var(--text-secondary);
+  font-weight: 700;
+}
+
+.user-table tr:hover td {
+  background: #f8fafc;
+}
+
+.user-table tr:last-child td {
+  border-bottom: 0;
+}
+
 .toast {
   position: fixed;
   right: 22px;

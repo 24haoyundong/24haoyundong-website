@@ -27,6 +27,8 @@ const statShortcutCount = document.querySelector("#statShortcutCount");
 const statStoreCount = document.querySelector("#statStoreCount");
 const statImageCount = document.querySelector("#statImageCount");
 const statContentCount = document.querySelector("#statContentCount");
+const userTableBody = document.querySelector("#userTableBody");
+const refreshUsers = document.querySelector("#refreshUsers");
 
 let isDirty = false;
 let pendingConfirm = null;
@@ -108,6 +110,43 @@ function escapeHtml(value) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function formatTime(value) {
+  if (!value) return "-";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleString("zh-CN", { hour12: false });
+}
+
+function renderUserRows(users) {
+  if (!userTableBody) return;
+  if (!users.length) {
+    userTableBody.innerHTML = `<tr><td colspan="4">还没有注册用户</td></tr>`;
+    return;
+  }
+  userTableBody.innerHTML = users.map((user) => `
+    <tr>
+      <td>${escapeHtml(user.nickname || "-")}</td>
+      <td>${escapeHtml(user.account || "-")}</td>
+      <td>${escapeHtml(formatTime(user.createdAt))}</td>
+      <td>${Number(user.sessionCount || 0)}</td>
+    </tr>
+  `).join("");
+}
+
+function loadUsers() {
+  if (!userTableBody) return;
+  userTableBody.innerHTML = `<tr><td colspan="4">正在加载...</td></tr>`;
+  fetch("/api/users")
+    .then((response) => {
+      if (!response.ok) throw new Error("load users failed");
+      return response.json();
+    })
+    .then((result) => renderUserRows(result.users || []))
+    .catch(() => {
+      userTableBody.innerHTML = `<tr><td colspan="4">用户加载失败，请刷新后台重试</td></tr>`;
+    });
 }
 
 function renderBanners() {
@@ -640,6 +679,10 @@ refreshAdmin.addEventListener("click", () => {
   window.location.reload();
 });
 
+if (refreshUsers) {
+  refreshUsers.addEventListener("click", loadUsers);
+}
+
 confirmCancel.addEventListener("click", hideConfirm);
 confirmMask.addEventListener("click", (event) => {
   if (event.target === confirmMask) hideConfirm();
@@ -665,5 +708,6 @@ renderHomeContents();
 renderEntryPages();
 renderStores();
 renderSystemSettings();
+loadUsers();
 updateDashboardStats();
 setActiveNav();

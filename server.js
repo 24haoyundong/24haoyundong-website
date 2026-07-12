@@ -2,12 +2,14 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
+const crypto = require("crypto");
 
 const PORT = Number(process.env.PORT || 8080);
 const PUBLIC_DIR = path.join(__dirname, "outputs");
 const DATA_DIR = path.join(PUBLIC_DIR, "data");
 const DATA_FILE = path.join(DATA_DIR, "site-data.json");
 const ADMIN_CONFIG_FILE = path.join(DATA_DIR, "admin-config.json");
+const USERS_FILE = path.join(DATA_DIR, "users.json");
 
 function readAdminConfig() {
   const defaults = {
@@ -60,6 +62,10 @@ function isAdminPath(urlPath) {
   return urlPath === "/admin.html" || urlPath === "/admin.js" || urlPath === "/admin.css" || urlPath.startsWith("/api/");
 }
 
+function isUserApiPath(urlPath) {
+  return urlPath === "/api/user-register" || urlPath === "/api/user-login" || urlPath === "/api/user-me";
+}
+
 function isAuthed(req) {
   const adminConfig = readAdminConfig();
   const header = req.headers.authorization || "";
@@ -93,6 +99,55 @@ function readBody(req, limit = 80 * 1024 * 1024) {
     req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
     req.on("error", reject);
   });
+}
+
+function readUsers() {
+  if (!fs.existsSync(USERS_FILE)) return { users: [], sessions: {} };
+  try {
+    const data = JSON.parse(fs.readFileSync(USERS_FILE, "utf8"));
+    return {
+      users: Array.isArray(data.users) ? data.users : [],
+      sessions: data.sessions && typeof data.sessions === "object" ? data.sessions : {}
+    };
+  } catch (error) {
+    return { users: [], sessions: {} };
+  }
+}
+
+function writeUsers(data) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  fs.writeFileSync(USERS_FILE, JSON.stringify(data, null, 2), "utf8");
+}
+
+function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
+  const hash = crypto.pbkdf2Sync(String(password), salt, 120000, 32, "sha256").toString("hex");
+  return { salt, hash };
+}
+
+function verifyPassword(password, user) {
+  if (!user || !user.salt || !user.passwordHash) return false;
+  return hashPassword(password, user.salt).hash === user.passwordHash;
+}
+
+function publicUser(user) {
+  return {
+    id: user.id,
+    account: user.account,
+    nickname: user.nickname || user.account,
+    createdAt: user.createdAt
+  };
+}
+
+function createToken() {
+  return crypto.randomBytes(32).toString("hex");
+}
+
+function normalizeAccount(value) {
+  return String(value || "").trim();
+}
+
+function accountKey(value) {
+  return normalizeAccount(value).toLowerCase();
 }
 
 function storeScript(dataJson) {
@@ -174,7 +229,92 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);
   const urlPath = url.pathname;
 
-  if (isAdminPath(urlPath) && !requireAuth(req, res)) return;
+  if (isAdminPath(urlPath) && !isUserApiPath(urlPath) && !requireAuth(req, res)) return;
+
+  if (urlPath === "/api/user-register" && req.method === "POST") {
+    try {
+      const input = JSON.parse(await readBody(req, 1024 * 1024));
+      const account = normalizeAccount(input.account);
+      const password = String(input.password || "");
+      const nickname = String(input.nickname || account).trim();
+      if (account.length < 2 || account.length > 60 || /\s/.test(account)) {
+        send(req, res, 400, JSON.stringify({ ok: false, message: "账号需要 2-60 位，不能包含空格" }), { "Content-Type": "application/json; charset=utf-8" });
+        return;
+      }
+      if (password.length < 6) {
+        send(req, res, 400, JSON.stringify({ ok: false, message: "密码至少 6 位" }), { "Content-Type": "application/json; charset=utf-8" });
+        return;
+      }
+
+      const data = readUsers();
+      if (data.users.some((user) => accountKey(user.account) === accountKey(account))) {
+        send(req, res, 409, JSON.stringify({ ok: false, message: "账号已经存在，请直接登录" }), { "Content-Type": "application/json; charset=utf-8" });
+        return;
+      }
+
+      const passwordData = hashPassword(password);
+      const user = {
+        id: crypto.randomUUID(),
+        account,
+        nickname: nickname || account,
+        salt: passwordData.salt,
+        passwordHash: passwordData.hash,
+        createdAt: new Date().toISOString()
+      };
+      const token = createToken();
+      data.users.push(user);
+      data.sessions[token] = { userId: user.id, createdAt: new Date().toISOString() };
+      writeUsers(data);
+      send(req, res, 200, JSON.stringify({ ok: true, token, user: publicUser(user) }), { "Content-Type": "application/json; charset=utf-8" });
+    } catch (error) {
+      send(req, res, 400, JSON.stringify({ ok: false, message: "bad request" }), { "Content-Type": "application/json; charset=utf-8" });
+    }
+    return;
+  }
+
+  if (urlPath === "/api/user-login" && req.method === "POST") {
+    try {
+      const input = JSON.parse(await readBody(req, 1024 * 1024));
+      const account = normalizeAccount(input.account);
+      const password = String(input.password || "");
+      const data = readUsers();
+      const user = data.users.find((item) => accountKey(item.account) === accountKey(account));
+      if (!verifyPassword(password, user)) {
+        send(req, res, 401, JSON.stringify({ ok: false, message: "账号或密码不正确" }), { "Content-Type": "application/json; charset=utf-8" });
+        return;
+      }
+      const token = createToken();
+      data.sessions[token] = { userId: user.id, createdAt: new Date().toISOString() };
+      writeUsers(data);
+      send(req, res, 200, JSON.stringify({ ok: true, token, user: publicUser(user) }), { "Content-Type": "application/json; charset=utf-8" });
+    } catch (error) {
+      send(req, res, 400, JSON.stringify({ ok: false, message: "bad request" }), { "Content-Type": "application/json; charset=utf-8" });
+    }
+    return;
+  }
+
+  if (urlPath === "/api/user-me" && req.method === "GET") {
+    const token = String(req.headers.authorization || "").replace(/^Bearer\s+/i, "");
+    const data = readUsers();
+    const session = data.sessions[token];
+    const user = session ? data.users.find((item) => item.id === session.userId) : null;
+    if (!user) {
+      send(req, res, 401, JSON.stringify({ ok: false }), { "Content-Type": "application/json; charset=utf-8" });
+      return;
+    }
+    send(req, res, 200, JSON.stringify({ ok: true, user: publicUser(user) }), { "Content-Type": "application/json; charset=utf-8" });
+    return;
+  }
+
+  if (urlPath === "/api/users" && req.method === "GET") {
+    const data = readUsers();
+    const users = data.users.map((user) => {
+      const sessionCount = Object.values(data.sessions).filter((session) => session.userId === user.id).length;
+      return Object.assign(publicUser(user), { sessionCount });
+    });
+    send(req, res, 200, JSON.stringify({ ok: true, users }), { "Content-Type": "application/json; charset=utf-8" });
+    return;
+  }
 
   if (urlPath === "/api/site-data" && req.method === "POST") {
     try {
