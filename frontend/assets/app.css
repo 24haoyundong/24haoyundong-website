@@ -295,7 +295,7 @@ button,
 
 .store-link {
   display: block;
-  padding-bottom: 42px;
+  padding-bottom: 92px;
 }
 
 .store-image {
@@ -440,26 +440,81 @@ button,
   bottom: 0;
   z-index: 10;
   width: min(430px, 100%);
-  height: 58px;
+  min-height: 56px;
   transform: translateX(-50%);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: center;
+  gap: 2px;
   background: #fff;
-  border-top: 1px solid var(--line);
+  border: 1px solid rgba(226, 232, 240, .78);
+  border-bottom: 0;
   border-radius: 18px 18px 0 0;
-  box-shadow: 0 -6px 18px rgba(15, 23, 42, .08);
+  box-shadow: 0 -8px 24px rgba(15, 23, 42, .12);
+  padding: 6px 10px max(6px, env(safe-area-inset-bottom));
 }
 
 .bottom-nav a {
+  position: relative;
+  min-width: 0;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
   text-align: center;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.1;
+  border-radius: 14px;
+  transition: color .18s ease, background .18s ease, transform .18s ease;
 }
 
 .bottom-nav a.active {
   color: var(--primary);
   font-weight: 800;
+}
+
+.bottom-nav .nav-icon {
+  width: 21px;
+  height: 21px;
+  display: grid;
+  place-items: center;
+  color: #94a3b8;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.bottom-nav .nav-label {
+  overflow: hidden;
+  max-width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bottom-nav a.active .nav-icon,
+.bottom-nav a.active .nav-label {
+  color: #ff4d1f;
+}
+
+.bottom-nav .consult-item {
+  transform: translateY(-10px);
+}
+
+.bottom-nav .consult-item .nav-icon {
+  width: 42px;
+  height: 42px;
+  color: #fff;
+  font-size: 24px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #ff6738 0%, #f23622 100%);
+  box-shadow: 0 8px 18px rgba(255, 77, 31, .34);
+}
+
+.bottom-nav .consult-item .nav-label {
+  color: var(--text);
+  font-weight: 700;
 }
 
 @media (max-width: 360px) {
@@ -471,5 +526,11 @@ button,
   .grid-menu,
   .service-icons {
     gap: 12px 4px;
+  }
+
+  .bottom-nav {
+    width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 }

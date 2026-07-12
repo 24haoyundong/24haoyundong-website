@@ -573,11 +573,25 @@
 
     if (!navs.length) return;
 
+    const iconForNav = (item) => {
+      const key = item.page_key || "";
+      const title = item.title || "";
+      if (item.action === "consult" || key === "consult" || title.includes("咨询")) return "☎";
+      if (key === "home" || title.includes("首页")) return "⌂";
+      if (key === "buy-store" || title.includes("买")) return "▣";
+      if (key === "my" || title.includes("我")) return "◇";
+      return "•";
+    };
+
     nav.innerHTML = navs.map((item) => {
       const isActive = item.page_key === page;
       const isConsult = item.action === "consult";
       const attrs = isConsult ? 'href="#" data-consult' : `href="${escapeHtml(item.link_url || "#")}"`;
-      return `<a class="${isActive ? "active" : ""}" ${attrs}>${escapeHtml(item.title)}</a>`;
+      const classes = ["nav-item", isActive ? "active" : "", isConsult ? "consult-item" : ""].filter(Boolean).join(" ");
+      return `<a class="${classes}" ${attrs}>
+        <span class="nav-icon">${escapeHtml(iconForNav(item))}</span>
+        <span class="nav-label">${escapeHtml(item.title)}</span>
+      </a>`;
     }).join("");
 
     document.querySelectorAll(".bottom-nav [data-consult]").forEach((el) => {
