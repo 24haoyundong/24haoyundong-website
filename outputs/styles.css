@@ -119,6 +119,116 @@ a {
   font-weight: 700;
 }
 
+.share-poster-btn {
+  position: fixed;
+  right: max(14px, calc((100vw - 430px) / 2 + 14px));
+  bottom: calc(84px + env(safe-area-inset-bottom));
+  z-index: 20;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 19px;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(255, 91, 26, .28);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.share-poster-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: rgba(15, 23, 42, .58);
+}
+
+.share-poster-modal[hidden] {
+  display: none;
+}
+
+.share-poster-panel {
+  width: min(100%, 390px);
+  max-height: calc(100vh - 36px);
+  overflow: auto;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 52px rgba(15, 23, 42, .22);
+}
+
+.share-poster-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.share-poster-head strong {
+  font-size: 17px;
+}
+
+.share-poster-head button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #f1f2f5;
+  color: #4b5563;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.share-poster-body {
+  padding: 14px;
+  text-align: center;
+}
+
+.share-poster-body canvas,
+.share-poster-body img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, .12);
+}
+
+.share-poster-body p {
+  margin: 18px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.share-poster-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 14px 12px;
+}
+
+.share-poster-actions button {
+  height: 40px;
+  border-radius: 20px;
+  background: #f1f2f5;
+  color: #202124;
+  font-weight: 800;
+}
+
+.share-poster-actions button:first-child {
+  background: var(--accent);
+  color: #fff;
+}
+
+.share-poster-tip {
+  margin: 0;
+  padding: 0 14px 16px;
+  color: #858997;
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+
 .hero-wrap {
   position: relative;
   background: #fff;

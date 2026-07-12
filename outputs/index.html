@@ -41,6 +41,25 @@
       <section class="home-content-list" id="homeContentList"></section>
     </main>
 
+    <button class="share-poster-btn" type="button" id="sharePosterBtn">生成海报</button>
+
+    <div class="share-poster-modal" id="sharePosterModal" hidden>
+      <div class="share-poster-panel">
+        <div class="share-poster-head">
+          <strong>分享海报</strong>
+          <button type="button" id="sharePosterClose" aria-label="关闭">×</button>
+        </div>
+        <div class="share-poster-body" id="sharePosterBody">
+          <p>正在生成海报...</p>
+        </div>
+        <div class="share-poster-actions">
+          <button type="button" id="sharePosterDownload">下载海报</button>
+          <button type="button" id="sharePosterCopy">复制链接</button>
+        </div>
+        <p class="share-poster-tip" id="sharePosterTip">手机上可长按海报保存，再发朋友圈。</p>
+      </div>
+    </div>
+
     <nav class="tabbar" aria-label="tabs">
       <a class="active" href="./index.html">
         <span>&#8962;</span>
@@ -61,6 +80,6 @@
     </nav>
 
     <script src="./site-data.js"></script>
-    <script src="./script.js?v=10"></script>
+    <script src="./script.js?v=11"></script>
   </body>
 </html>

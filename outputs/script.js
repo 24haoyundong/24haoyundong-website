@@ -207,6 +207,205 @@ function renderHomeContents() {
   }).join("");
 }
 
+const sharePosterBtn = document.querySelector("#sharePosterBtn");
+const sharePosterModal = document.querySelector("#sharePosterModal");
+const sharePosterClose = document.querySelector("#sharePosterClose");
+const sharePosterBody = document.querySelector("#sharePosterBody");
+const sharePosterDownload = document.querySelector("#sharePosterDownload");
+const sharePosterCopy = document.querySelector("#sharePosterCopy");
+const sharePosterTip = document.querySelector("#sharePosterTip");
+let sharePosterImageUrl = "";
+
+function getShareUrl() {
+  return new URL("./index.html", location.href).href;
+}
+
+function loadPosterImage(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    if (/^https?:\/\//i.test(src)) image.crossOrigin = "anonymous";
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = src;
+  });
+}
+
+function roundedRect(ctx, x, y, width, height, radius) {
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.arcTo(x + width, y, x + width, y + height, radius);
+  ctx.arcTo(x + width, y + height, x, y + height, radius);
+  ctx.arcTo(x, y + height, x, y, radius);
+  ctx.arcTo(x, y, x + width, y, radius);
+  ctx.closePath();
+}
+
+function drawWrappedText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
+  const words = Array.from(text);
+  let line = "";
+  let lines = 0;
+  for (let index = 0; index < words.length; index += 1) {
+    const testLine = line + words[index];
+    if (ctx.measureText(testLine).width > maxWidth && line) {
+      ctx.fillText(line, x, y);
+      y += lineHeight;
+      lines += 1;
+      line = words[index];
+      if (lines >= maxLines - 1) break;
+    } else {
+      line = testLine;
+    }
+  }
+  if (line && lines < maxLines) ctx.fillText(line, x, y);
+  return y + lineHeight;
+}
+
+async function renderSharePoster() {
+  const shareUrl = getShareUrl();
+  const bannerSrc = homeBanners[0]?.image || "./assets/banner-24-01.png";
+  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&margin=12&data=${encodeURIComponent(shareUrl)}`;
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = 750;
+  canvas.height = 1180;
+
+  ctx.fillStyle = "#f5f7fb";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const gradient = ctx.createLinearGradient(0, 0, 750, 420);
+  gradient.addColorStop(0, "#ff6a1f");
+  gradient.addColorStop(1, "#2563eb");
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, 750, 350);
+
+  ctx.fillStyle = "rgba(255,255,255,.16)";
+  for (let i = 0; i < 8; i += 1) {
+    ctx.beginPath();
+    ctx.arc(90 + i * 96, 70 + (i % 3) * 62, 34 + i * 3, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  ctx.fillStyle = "#fff";
+  ctx.font = "800 54px sans-serif";
+  ctx.fillText("贰拾肆号电商", 54, 105);
+  ctx.font = "500 28px sans-serif";
+  ctx.fillText("电商资源整合 · 店铺资源 · 入驻服务", 56, 158);
+
+  roundedRect(ctx, 46, 210, 658, 375, 28);
+  ctx.fillStyle = "#fff";
+  ctx.fill();
+
+  try {
+    const banner = await loadPosterImage(bannerSrc);
+    roundedRect(ctx, 76, 240, 598, 316, 18);
+    ctx.save();
+    ctx.clip();
+    const ratio = Math.max(598 / banner.width, 316 / banner.height);
+    const width = banner.width * ratio;
+    const height = banner.height * ratio;
+    ctx.drawImage(banner, 76 + (598 - width) / 2, 240 + (316 - height) / 2, width, height);
+    ctx.restore();
+  } catch (error) {
+    ctx.fillStyle = "#111827";
+    ctx.font = "800 42px sans-serif";
+    ctx.fillText("电商资源整合", 205, 410);
+  }
+
+  ctx.fillStyle = "#111827";
+  ctx.font = "800 42px sans-serif";
+  ctx.fillText("一站式电商服务支持", 56, 670);
+  ctx.fillStyle = "#4b5563";
+  ctx.font = "28px sans-serif";
+  drawWrappedText(ctx, "淘宝、拼多多、天猫、抖店等店铺资源服务，支持咨询、评估、入驻、申诉等业务。", 56, 725, 638, 48, 3);
+
+  const tags = ["真实资源", "在线咨询", "快速对接", "电商服务"];
+  tags.forEach((tag, index) => {
+    const x = 56 + (index % 2) * 330;
+    const y = 845 + Math.floor(index / 2) * 68;
+    roundedRect(ctx, x, y, 292, 46, 23);
+    ctx.fillStyle = index % 2 ? "#eef2ff" : "#fff3ed";
+    ctx.fill();
+    ctx.fillStyle = index % 2 ? "#2563eb" : "#ff5b1a";
+    ctx.font = "700 24px sans-serif";
+    ctx.fillText(tag, x + 28, y + 31);
+  });
+
+  roundedRect(ctx, 46, 990, 658, 140, 26);
+  ctx.fillStyle = "#fff";
+  ctx.fill();
+  ctx.fillStyle = "#111827";
+  ctx.font = "800 30px sans-serif";
+  ctx.fillText("扫码查看服务详情", 58, 1044);
+  ctx.fillStyle = "#64748b";
+  ctx.font = "20px sans-serif";
+  drawWrappedText(ctx, shareUrl, 58, 1080, 420, 30, 2);
+
+  try {
+    const qr = await loadPosterImage(qrSrc);
+    ctx.drawImage(qr, 540, 1010, 120, 120);
+  } catch (error) {
+    ctx.strokeStyle = "#d1d5db";
+    ctx.strokeRect(540, 1010, 120, 120);
+    ctx.fillStyle = "#64748b";
+    ctx.font = "20px sans-serif";
+    ctx.fillText("二维码", 570, 1078);
+  }
+
+  sharePosterBody.innerHTML = "";
+  try {
+    sharePosterImageUrl = canvas.toDataURL("image/png");
+    const img = document.createElement("img");
+    img.src = sharePosterImageUrl;
+    img.alt = "分享海报";
+    sharePosterBody.appendChild(img);
+    sharePosterTip.textContent = "手机上长按海报保存，再发朋友圈。";
+  } catch (error) {
+    sharePosterImageUrl = "";
+    sharePosterBody.appendChild(canvas);
+    sharePosterTip.textContent = "如果下载失败，可以直接截图保存海报。";
+  }
+}
+
+function openSharePoster() {
+  sharePosterModal.hidden = false;
+  sharePosterBody.innerHTML = "<p>正在生成海报...</p>";
+  sharePosterTip.textContent = "手机上可长按海报保存，再发朋友圈。";
+  renderSharePoster().catch(() => {
+    sharePosterBody.innerHTML = "<p>海报生成失败，请刷新后再试。</p>";
+  });
+}
+
+function closeSharePoster() {
+  sharePosterModal.hidden = true;
+}
+
+sharePosterBtn.addEventListener("click", openSharePoster);
+sharePosterClose.addEventListener("click", closeSharePoster);
+sharePosterModal.addEventListener("click", (event) => {
+  if (event.target === sharePosterModal) closeSharePoster();
+});
+
+sharePosterDownload.addEventListener("click", () => {
+  if (!sharePosterImageUrl) {
+    sharePosterTip.textContent = "当前环境不支持直接下载，请截图保存海报。";
+    return;
+  }
+  const link = document.createElement("a");
+  link.download = "24haods-share-poster.png";
+  link.href = sharePosterImageUrl;
+  link.click();
+});
+
+sharePosterCopy.addEventListener("click", async () => {
+  const shareUrl = getShareUrl();
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    sharePosterTip.textContent = "链接已复制。";
+  } catch (error) {
+    sharePosterTip.textContent = shareUrl;
+  }
+});
+
 function getShortcutId(item, index) {
   return item.id || `entry-${index}`;
 }
