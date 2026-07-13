@@ -545,6 +545,31 @@ label {
   border-bottom: 0;
 }
 
+.user-reset {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-reset input {
+  width: 120px;
+  height: 34px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0 10px;
+  outline: none;
+}
+
+.user-reset button {
+  height: 34px;
+  border-radius: 8px;
+  padding: 0 12px;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .toast {
   position: fixed;
   right: 22px;

@@ -1,4 +1,4 @@
-let data = window.siteDataStore.load();
+﻿let data = window.siteDataStore.load();
 const shortcutEditor = document.querySelector("#shortcutEditor");
 const storeEditor = document.querySelector("#storeEditor");
 const pddStoreEditor = document.querySelector("#pddStoreEditor");
@@ -122,22 +122,28 @@ function formatTime(value) {
 function renderUserRows(users) {
   if (!userTableBody) return;
   if (!users.length) {
-    userTableBody.innerHTML = `<tr><td colspan="4">还没有注册用户</td></tr>`;
+    userTableBody.innerHTML = `<tr><td colspan="5">还没有注册用户</td></tr>`;
     return;
   }
   userTableBody.innerHTML = users.map((user) => `
     <tr>
-      <td>${escapeHtml(user.nickname || "-")}</td>
+      <td>${escapeHtml(user.nickname || user.account || "-")}</td>
       <td>${escapeHtml(user.account || "-")}</td>
       <td>${escapeHtml(formatTime(user.createdAt))}</td>
       <td>${Number(user.sessionCount || 0)}</td>
+      <td>
+        <div class="user-reset">
+          <input type="text" data-reset-password="${escapeHtml(user.id)}" placeholder="输入新密码">
+          <button type="button" data-reset-user="${escapeHtml(user.id)}">设置密码</button>
+        </div>
+      </td>
     </tr>
   `).join("");
 }
 
 function loadUsers() {
   if (!userTableBody) return;
-  userTableBody.innerHTML = `<tr><td colspan="4">正在加载...</td></tr>`;
+  userTableBody.innerHTML = `<tr><td colspan="5">正在加载...</td></tr>`;
   fetch("/api/users")
     .then((response) => {
       if (!response.ok) throw new Error("load users failed");
@@ -145,10 +151,37 @@ function loadUsers() {
     })
     .then((result) => renderUserRows(result.users || []))
     .catch(() => {
-      userTableBody.innerHTML = `<tr><td colspan="4">用户加载失败，请刷新后台重试</td></tr>`;
+      userTableBody.innerHTML = `<tr><td colspan="5">用户加载失败，请刷新后台重试</td></tr>`;
     });
 }
 
+function resetUserPassword(userId) {
+  const input = userTableBody.querySelector(`[data-reset-password="${CSS.escape(userId)}"]`);
+  const password = input ? input.value : "";
+  if (password.length < 6) {
+    showToast("新密码至少 6 位");
+    return;
+  }
+  fetch("/api/user-reset-password", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId, password })
+  })
+    .then((response) => {
+      return response.json().catch(() => ({})).then((result) => {
+        if (!response.ok || result.ok === false) {
+          throw new Error(result.message || `设置失败：${response.status}`);
+        }
+        return result;
+      });
+    })
+    .then(() => {
+      showToast(`密码已设置为：${password}`);
+      if (input) input.value = "";
+    })
+    .catch((error) => showToast(error.message || "重置失败，请稍后重试"));
+}
 function renderBanners() {
   data.homeBanners = data.homeBanners || [];
   bannerHeightInput.value = Number(data.homeBannerHeight) || 128;
@@ -682,6 +715,13 @@ refreshAdmin.addEventListener("click", () => {
 if (refreshUsers) {
   refreshUsers.addEventListener("click", loadUsers);
 }
+if (userTableBody) {
+  userTableBody.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-reset-user]");
+    if (!button) return;
+    resetUserPassword(button.dataset.resetUser);
+  });
+}
 
 confirmCancel.addEventListener("click", hideConfirm);
 confirmMask.addEventListener("click", (event) => {
@@ -711,3 +751,4 @@ renderSystemSettings();
 loadUsers();
 updateDashboardStats();
 setActiveNav();
+

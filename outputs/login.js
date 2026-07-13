@@ -2,7 +2,6 @@ const loginTitle = document.querySelector("#loginTitle");
 const loginDesc = document.querySelector("#loginDesc");
 const loginTab = document.querySelector("#loginTab");
 const registerTab = document.querySelector("#registerTab");
-const nicknameInput = document.querySelector("#nicknameInput");
 const accountInput = document.querySelector("#accountInput");
 const passwordInput = document.querySelector("#passwordInput");
 const confirmPasswordInput = document.querySelector("#confirmPasswordInput");
@@ -19,7 +18,8 @@ const text = {
   registerDesc: "\u6ce8\u518c\u540e\u53ef\u4f7f\u7528\u4e2a\u4eba\u670d\u52a1\u5165\u53e3\u3002",
   login: "\u767b\u5f55",
   register: "\u6ce8\u518c",
-  required: "\u8bf7\u586b\u5199\u8d26\u53f7\u548c\u5bc6\u7801",
+  required: "\u8bf7\u586b\u5199\u624b\u673a\u53f7\u548c\u5bc6\u7801",
+  invalidPhone: "\u8bf7\u8f93\u5165\u6b63\u786e\u768411\u4f4d\u624b\u673a\u53f7",
   shortPassword: "\u5bc6\u7801\u81f3\u5c11 6 \u4f4d",
   mismatch: "\u4e24\u6b21\u5bc6\u7801\u4e0d\u4e00\u81f4",
   loading: "\u5904\u7406\u4e2d...",
@@ -53,12 +53,16 @@ function saveLogin(result) {
 }
 
 async function submit() {
-  const account = accountInput.value.trim();
+  const account = accountInput.value.replace(/\D/g, "");
   const password = passwordInput.value;
-  const nickname = nicknameInput.value.trim() || account;
+  const nickname = account;
 
   if (!account || !password) {
     setMessage(text.required, true);
+    return;
+  }
+  if (!/^1[3-9]\d{9}$/.test(account)) {
+    setMessage(text.invalidPhone, true);
     return;
   }
   if (password.length < 6) {
@@ -94,6 +98,9 @@ async function submit() {
 
 loginTab.addEventListener("click", () => setMode("login"));
 registerTab.addEventListener("click", () => setMode("register"));
+accountInput.addEventListener("input", () => {
+  accountInput.value = accountInput.value.replace(/\D/g, "").slice(0, 11);
+});
 submitBtn.addEventListener("click", submit);
 document.addEventListener("keydown", (event) => {
   if (event.key === "Enter") submit();

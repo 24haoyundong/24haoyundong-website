@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>&#31649;&#29702;&#21518;&#21488;</title>
-    <link rel="stylesheet" href="./admin.css?v=8">
+    <link rel="stylesheet" href="./admin.css?v=9">
   </head>
   <body>
     <aside class="admin-sidebar" id="adminSidebar">
@@ -154,24 +154,24 @@
           <h2>用户管理</h2>
           <button type="button" id="refreshUsers">刷新用户</button>
         </div>
-        <div class="hint">这里显示前台注册的用户。当前版本只做查看，后续可以继续加禁用、备注、咨询记录。</div>
+        <div class="hint">这里显示前台手机号注册的用户。原密码加密保存，后台不能查看；你可以在这里给用户设置一个新密码，并把新密码发给用户。</div>
         <div class="user-table-wrap">
           <table class="user-table">
             <thead>
               <tr>
                 <th>昵称</th>
-                <th>账号</th>
+                <th>手机号</th>
                 <th>注册时间</th>
                 <th>登录次数</th>
+                <th>设置新密码</th>
               </tr>
             </thead>
             <tbody id="userTableBody">
-              <tr><td colspan="4">正在加载...</td></tr>
+              <tr><td colspan="5">正在加载...</td></tr>
             </tbody>
           </table>
         </div>
       </section>
-
       <section class="admin-card" id="system-settings">
         <div class="card-head">
           <h2>&#31995;&#32479;&#21672;&#35810;&#35774;&#32622;</h2>
@@ -227,6 +227,7 @@
     </div>
 
     <script src="./site-data.js"></script>
-    <script src="./admin.js?v=10"></script>
+    <script src="./admin.js?v=12"></script>
   </body>
 </html>
+

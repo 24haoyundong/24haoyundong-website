@@ -1,4 +1,4 @@
-const http = require("http");
+﻿const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const zlib = require("zlib");
@@ -150,6 +150,14 @@ function accountKey(value) {
   return normalizeAccount(value).toLowerCase();
 }
 
+function normalizePhone(value) {
+  return String(value || "").replace(/\D/g, "");
+}
+
+function isValidPhone(value) {
+  return /^1[3-9]\d{9}$/.test(value);
+}
+
 function storeScript(dataJson) {
   return `
 window.DEFAULT_SITE_DATA = ${dataJson};
@@ -234,11 +242,11 @@ const server = http.createServer(async (req, res) => {
   if (urlPath === "/api/user-register" && req.method === "POST") {
     try {
       const input = JSON.parse(await readBody(req, 1024 * 1024));
-      const account = normalizeAccount(input.account);
+      const account = normalizePhone(input.account);
       const password = String(input.password || "");
       const nickname = String(input.nickname || account).trim();
-      if (account.length < 2 || account.length > 60 || /\s/.test(account)) {
-        send(req, res, 400, JSON.stringify({ ok: false, message: "账号需要 2-60 位，不能包含空格" }), { "Content-Type": "application/json; charset=utf-8" });
+      if (!isValidPhone(account)) {
+        send(req, res, 400, JSON.stringify({ ok: false, message: "请输入正确的11位手机号" }), { "Content-Type": "application/json; charset=utf-8" });
         return;
       }
       if (password.length < 6) {
@@ -275,8 +283,12 @@ const server = http.createServer(async (req, res) => {
   if (urlPath === "/api/user-login" && req.method === "POST") {
     try {
       const input = JSON.parse(await readBody(req, 1024 * 1024));
-      const account = normalizeAccount(input.account);
+      const account = normalizePhone(input.account);
       const password = String(input.password || "");
+      if (!isValidPhone(account)) {
+        send(req, res, 400, JSON.stringify({ ok: false, message: "请输入正确的11位手机号" }), { "Content-Type": "application/json; charset=utf-8" });
+        return;
+      }
       const data = readUsers();
       const user = data.users.find((item) => accountKey(item.account) === accountKey(account));
       if (!verifyPassword(password, user)) {
@@ -287,6 +299,33 @@ const server = http.createServer(async (req, res) => {
       data.sessions[token] = { userId: user.id, createdAt: new Date().toISOString() };
       writeUsers(data);
       send(req, res, 200, JSON.stringify({ ok: true, token, user: publicUser(user) }), { "Content-Type": "application/json; charset=utf-8" });
+    } catch (error) {
+      send(req, res, 400, JSON.stringify({ ok: false, message: "bad request" }), { "Content-Type": "application/json; charset=utf-8" });
+    }
+    return;
+  }
+
+  if (urlPath === "/api/user-reset-password" && req.method === "POST") {
+    try {
+      const input = JSON.parse(await readBody(req, 1024 * 1024));
+      const userId = String(input.userId || "");
+      const password = String(input.password || "");
+      if (password.length < 6) {
+        send(req, res, 400, JSON.stringify({ ok: false, message: "密码至少 6 位" }), { "Content-Type": "application/json; charset=utf-8" });
+        return;
+      }
+      const data = readUsers();
+      const user = data.users.find((item) => item.id === userId);
+      if (!user) {
+        send(req, res, 404, JSON.stringify({ ok: false, message: "用户不存在" }), { "Content-Type": "application/json; charset=utf-8" });
+        return;
+      }
+      const passwordData = hashPassword(password);
+      user.salt = passwordData.salt;
+      user.passwordHash = passwordData.hash;
+      user.passwordChangedAt = new Date().toISOString();
+      writeUsers(data);
+      send(req, res, 200, JSON.stringify({ ok: true }), { "Content-Type": "application/json; charset=utf-8" });
     } catch (error) {
       send(req, res, 400, JSON.stringify({ ok: false, message: "bad request" }), { "Content-Type": "application/json; charset=utf-8" });
     }
@@ -359,3 +398,4 @@ server.listen(PORT, "0.0.0.0", () => {
   console.log(`管理后台: http://127.0.0.1:${PORT}/admin.html`);
   console.log(`后台账号: ${adminConfig.user}`);
 });
+

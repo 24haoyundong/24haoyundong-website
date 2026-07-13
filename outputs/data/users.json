@@ -15,6 +15,15 @@
       "salt": "d57e6761d4b104271196f14c8cc95d8b",
       "passwordHash": "4c3c51f78ea6bf8b4c57d7d4a8f9dcb836feb88b698e866d6785eaac23bec3f1",
       "createdAt": "2026-07-12T09:31:09.805Z"
+    },
+    {
+      "id": "72580bb6-b26c-476b-a7f1-510fad49dee0",
+      "account": "18820286825",
+      "nickname": "18820286825",
+      "salt": "7ac0daf5bdd0c02a95933bafd173d876",
+      "passwordHash": "8c8deec6d66f3fa2f427f24d674c3dd42cfaaa7df5a5dc7746501c617bd8107d",
+      "createdAt": "2026-07-12T10:26:10.330Z",
+      "passwordChangedAt": "2026-07-12T10:37:19.019Z"
     }
   ],
   "sessions": {
@@ -29,6 +38,14 @@
     "4f37a846d7a63be29e0bfb6ddf2260f63ce67c4cc0d7f0fe6b6866a8c4dcb174": {
       "userId": "1c4b4ffc-e5bb-4dea-8ec8-aa7c37427f42",
       "createdAt": "2026-07-12T09:31:09.805Z"
+    },
+    "72506b6285e05fbe310c32c8e5944b5d1348c4c35ffe42c96b040cef98a620d6": {
+      "userId": "72580bb6-b26c-476b-a7f1-510fad49dee0",
+      "createdAt": "2026-07-12T10:26:10.330Z"
+    },
+    "665cea29302ab51ce4da253c527f752b3fb1fbc20336141a4df31f6646909d03": {
+      "userId": "72580bb6-b26c-476b-a7f1-510fad49dee0",
+      "createdAt": "2026-07-12T10:26:56.265Z"
     }
   }
 }
